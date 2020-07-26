@@ -10,6 +10,7 @@ int hash::Hash(string key) {
 	
 	int hash = 0;
 	int index;
+	int bla = 0;
 
 
 }
