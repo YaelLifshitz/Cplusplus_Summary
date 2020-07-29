@@ -8,6 +8,26 @@
 
 using namespace std;
 
+// Functions:
+// apearing before the main function.
+// this one has defult value, defult values has to come last
+int addNumbers(int firstNum, int secoundNum = 0) {
+    int combinedValue = firstNum + secoundNum;
+    return combinedValue;
+
+}
+// functions can have the same names but need to have difrrent attributs inside
+int addNumbers(int firstNum, int secoundNum, int thirdNum ) {
+    return firstNum + secoundNum + thirdNum;
+}
+
+// Recursive Function:
+int getFactorial(int number) {
+    int sum;
+    if (number == 1) sum = 1;
+    else sum = getFactorial((number - 1) * number);
+    return sum;
+}
 
 
 int main() {
@@ -208,11 +228,40 @@ int main() {
     char happyArray[6] = { 'H', 'a', 'p', 'p', 'y', '\0' }; // this is the way we did string in C
     string birthdayString = "Birthday"; // this is the way we do it in C++
     cout << happyArray + birthdayString << endl;
- 
+    //the size() method
+    cout << "size of string: " << birthdayString.size() << endl;
+    // the empty() method- return 0 if not empty and 1 if empty.
+    cout << "Is string empty? " << birthdayString.empty() << endl;
+    // adding an additional string and print it, using append() method in the print function
+    cout << birthdayString.append("was your guess") << endl;
+    // compering strings number!
+    string dogString = "dog";
+    string catString = "cat";
+    cout << dogString.compare(catString) << endl; // return 1 when its less then
+    cout << dogString.compare(dogString) << endl; // return 0 when the strings are equal
+    cout << catString.compare(dogString) << endl; // return -1 when its grater then
+    //copying strings
+    string yourName = "Yael";
+    string wholeName = yourName.assign(yourName);
+    cout << wholeName << endl;
+    // another option for copying
+    string firstName = wholeName.assign(wholeName, 0, 5);
+    cout << firstName << endl;
+    int lastNameIndex = yourName.find("Banas", 0);
+    cout << "Index for last name: " << lastNameIndex << endl;
+    //insert the string starting from position 5
+    yourName.insert(5, "Justin");
+    cout << yourName << endl;
+    // erasing from a string: erasing 6 charecters ,starting from position 7
+    yourName.erase(6, 7);
+    cout << yourName << endl;
+    // replacing 6 charecters, starting from position 5
+    yourName.replace(6, 5, "Maximus");
+    cout << yourName << endl;
+
 
     ///////////////////////////////////////////////////////////////////////////////////////
    // User Input:
-    string yourName;
     cout << "What is your Name? ";
     getline(cin, yourName); // entering a value from the user to the var
 
@@ -223,20 +272,126 @@ int main() {
 
     cout << "what is Euler's constant?";
     getline(cin, eulerGuess);
+    // convert string to double
+    eulerGuessDouble = stod(eulerGuess);
+    if (eulerGuessDouble == eulersConstant) {
+        cout << "You are right" << endl;
+    }
+    else {
+        cout << "you are wrong" << endl;
+    }
 
 
 
 
     // Vectors:
+    // vectors are very similar to array, the diffrence is that you cange change the size of vectors
+    //init vector:
+    vector <int> lotteryNumVect(10);
+    int lotteryNumArray[5] = { 4, 13, 14, 24, 34 };
+    //inserting to a vector:
+    //inserting from the begining, inserting the array specified, inserting only 3 numbers from the array 
+    lotteryNumVect.insert(lotteryNumVect.begin(), lotteryNumArray, lotteryNumArray + 3);
+    // printing only the third number
+    cout << lotteryNumVect.at(2) << endl;
+    //inserting to a vector- starting from position 5, inserting 44
+    lotteryNumVect.insert(lotteryNumVect.begin() + 5, 44);
+    cout << lotteryNumVect.at(5) << endl;
+    // push back at the end of a vector:
+    lotteryNumVect.push_back(64);
+    //printing the last number:
+    cout << "Final Value: " << lotteryNumVect.back() << endl;
+    //printing the first number:
+    cout << "First Value: " << lotteryNumVect.front() << endl;
+    //printing the if empty or not- if empty returns 1 (True) if not returns 0 (False):
+    cout << "is empty?  " << lotteryNumVect.empty() << endl;
+    //printing the size of the vector:
+    cout << "the vector size is:  " << lotteryNumVect.size() << endl;
+    lotteryNumVect.pop_back();
 
-    // Functions:
 
-    // Recursive Function:
+    /////////////////////////////////////////////////////////////////////////
+    // calling the Functions:
+    cout << addNumbers(1) << endl;
+    cout << addNumbers(1, 5, 6) << endl;
 
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //calling the Recursive Function:
+    cout << "The factorial of 3 is: " << getFactorial(3) << endl;
+
+    ///////////////////////////////////////////////////////////////////////////////////////
     // File I/O:
+    // how to read and write files using text or machinery readable
+    string steveQuote = "A day without sunshine is like, you know, night";
+    // creating a file so we can save the quote above into the file
+    ofstream writer("stevequote.txt");
+    //verifing that the file stream was indeed created
+    if (! writer) {
+        cout << "Error opening file" << endl;
+        //signaling the an error accured using return -1
+        return -1;
+    }
+    else {
+        // the file you want to write to, and then the string you want to write in the file
+        writer << steveQuote << endl;
+        // colsing the file, important, you can't open another file unless you close the former
+        writer.close();
+    }
+    //we want to write to the txt file from before.
+    // the last attribut on the line is explaind above the line 
+    ofstream writer2("stevequote.txt", ios::app);
+    // Open a stream to append to whats there with ios::app
+    //ios::binary : Treat the file as binary
+    // ios::trunc : Default
+    // ios::out : Open a file to write output
+    //verifing that the file stream was indeed created
+    if (!writer2) {
+        cout << "Error opening file" << endl;
+        //signaling the an error accured using return -1
+        return -1;
+    }
+    else {
+        // the file you want to write to, and then the string you want to write in the file
+        writer2 << "\n -Steve Martin" << endl;
+        // colsing the file, important, you can't open another file unless you close the former
+        writer2.close();
+    }
+    // how to read from a file:
+    char letter;
+    ifstream reader("stevequote.txt");
+    if (! reader) {
+        cout << "Error opening file" << endl;
+        return -1;
+    }
+    else {
+        // reader.eof() returns the end of the file
+        for (int i = 0; reader.eof(); i++) {
+            // gets the next letter of output that we want into the var letter
+            reader.get(letter);
+            // basically printing the file letter by letter
+            cout << letter;
+        }
+        cout << endl;
+    }
 
+    ///////////////////////////////////////////////////////////////////////////
     // Exception Handling:
+    //helps to aviod potentioal problems
+    // we fouces here on divition in zero
+    int number = 0;
+    try {
+        if (number != 0) {
+            cout << 2 / number << endl;
+        }
+        else throw(number);
+    }
+    // its not mendetory to do catch but it nicer and make sense with the error writing
+    catch (int number) {
+        cout << number << "is not valid" << endl;
+    }
 
+    ////////////////////////////////////////////////////////////////
     // Pointers:
 
     // Reference Operator:
