@@ -7,6 +7,14 @@
 
 
 using namespace std;
+//////////////////////////////////////////////////////
+/*
+This summry is from watching this video on Youtube!
+show him love if it helped you!!!
+https://www.youtube.com/watch?v=Rub-JsjMhWY&t=2418s
+
+*/
+
 
 // Functions:
 // apearing before the main function.
@@ -20,7 +28,7 @@ int addNumbers(int firstNum, int secoundNum = 0) {
 int addNumbers(int firstNum, int secoundNum, int thirdNum ) {
     return firstNum + secoundNum + thirdNum;
 }
-
+////////////////////////////////////////////////////////////////////////
 // Recursive Function:
 int getFactorial(int number) {
     int sum;
@@ -28,6 +36,196 @@ int getFactorial(int number) {
     else sum = getFactorial((number - 1) * number);
     return sum;
 }
+///////////////////////////////////////////////////////////////////
+//pointers in functions:
+void makeMeYoung(int* age) {
+    cout << "I used to be " << *age << endl;
+    *age = 21;
+}
+
+//////////////////////////////////////////////////////////////////
+// Reference Operator in functions:
+void actYourAge(int& age) {
+    age = 39;
+}
+
+
+//////////////////////////////////////////////////////////////////
+// Classes/ Objects:
+class Animal {
+    /*
+    Attributes : height ,weight, ... -> variables
+    Capabilities : run, eat,.... -> functions/methods
+    */
+    // Private:
+    // private mean variable that can only be changes using the functions in this class
+private:
+    int height;
+    int weight;
+    string name;
+
+    // static variables will be share among all the obejects of type Animal that has ever created
+    // normally will be attributs that the class object will not have
+    static int numOfAnimals;
+
+    // Public / Encapsulation:
+public:
+    int getHeight() { return height; }
+    int getWeight() { return weight; }
+    string getName() { return name; }
+    //protecting the values that are going to be stored
+    void setHeight(int cm) { height = cm; }
+    void setWeight(int kg) { weight = kg; }
+    void setName(string animalName) { name = animalName; }
+    //declering a prototype: (its an exemple of a way to construct)
+    //void setAll(int, int, string) {};
+    // constructor
+    //name of the constructor is the same as the class
+    Animal(int, int, string) {};
+    //distructor
+    ~Animal() {};
+    // another constructor (- sometimes can be called overload)
+    //name can be the same but the attributs needs to be diffrenet
+    Animal() {};
+    //protect - means that it will bw availbale to object of the same class
+    // as well as sub classes, but nothing else
+
+    // static method - attach to the class and not the object
+    // static methods can only acsses to static member variables
+    static int getNumOfAnimals() { return numOfAnimals; }
+    //print all the information about the animal
+    void toString() {};
+};
+// now we need to declare evreything
+//declering the static number of animals
+int Animal::numOfAnimals = 0;
+/*
+//to do this we nedded to write the setAll in the public section
+void Animal::setAll(int height, int weight, string name) {
+    // if we want to refer to an object specific heigh and 
+    //not just a generic type of height
+    //the reason we have to do that is because whenever the
+    //class was created there where no Animal objects yet
+    //so if we want to refer the specific animal objects vertion
+    // or value for height, we have to this infront of it
+    this -> height = height;
+    this -> name = name;
+    this -> weight = weight;
+    // the above lines are a way to go around and do the same as
+    // the lines in the public section in the class 
+    Animal::numOfAnimals++;
+}
+*/
+//the same can be done with a constructor:
+Animal::Animal(int height, int weight, string name) {
+    this->height = height;
+    this->name = name;
+    this->weight = weight;
+    Animal::numOfAnimals++;
+}
+//destructor
+Animal::~Animal(){
+    cout << "Animal " << this-> name << " destroyed" << endl;
+}
+//overloaded constructor when no attributs are past in
+Animal::Animal() {
+    Animal::numOfAnimals++;
+}
+void Animal::toString() {
+    cout << this->name << " is " << this->height <<
+        " cms tall and" << this->weight << "kg in weight" << endl;
+}
+
+////////////////////////////////////////////////////////////////
+// Inheritance:
+class Dog : public Animal {
+private: 
+    string sound = "Woof";
+
+public:
+    void getSound() { cout << sound << endl; }
+    // declering a new constructor
+    Dog(int, int, string, string);
+    // declering a defult constructor that doens't recive anything and on top of that call a super-class defult constructor
+    Dog() : Animal() {};
+   //overwrite the function toString() (we want something specific for dogs..)
+    void toString();
+};
+// definding all the methods declerd above at dogs
+/////////////////////////////////////////////////////////////
+//Superclass Constructor
+Dog::Dog(int height, int weight, string name, string bark) :
+    // having the animal constructor handling the height weight and name
+    // because thoes attributs are going to be shared
+    // and just change what is diffrenet
+    Animal(height, weight, name) {
+    this->sound = bark;
+}
+
+void Dog::toString() {
+    cout << this->getName() << " is " << this->getHeight()
+        << "cms tall and " << this->getWeight()
+        << " kgs in weight and says " << this -> sound << endl;
+
+}
+////////////////////////////////////////////////////////////////////////////////////
+// Virtual Methods and Polymorphism:
+// used in the Animal class-> chek it to see how it can be doen
+class Human {
+public:
+    void getFamily() { cout << "Wa are humens" << endl; }
+    // we use virtual methods when we know that a sub class will
+    // have a function that maight overwrite the base class
+    //(exp: Animal-base class, dog- sub class)
+    virtual void getClass() { cout << "I'm a Human" << endl; }
+    virtual void makeSound() { cout << "The Human says blabla" << endl; }
+
+};
+
+class Girl : public Human {
+public:
+    void getClass() { cout << "I'm a Girl" << endl; }
+    void makeSound() { cout << "The Girl says lalala" << endl; }
+};
+
+// Polymorphism:
+class BlondGirl : public Girl {
+public:
+    void getClass() { cout << "I'm a blond girl" << endl; }
+    void getDerived() { cout << "I'm a Human and a Girl" << endl; }
+
+};
+
+class Boy : public Human {
+public:
+    void makeSound() { cout << "The Human says yheyheyhe" << endl; }
+};
+// polymorphism finds what method to call, because we used the * befor the human
+void whatClassAreYou(Human *human) {
+    human->getClass();
+
+}
+
+/////////////////////////////////////////////////////////////////////////
+// Abstract Data Type:
+class Car {
+public:
+    virtual int getNumWheels() = 0;
+    virtual int getNumDoors() = 0;
+};
+
+class StationWagon : public Car {
+public:
+    int getNumWheels(){cout << "station wagon has 4 wheels" << endl; }
+    int getNumDoors() { cout << "Station wagon has 4 doors" << endl; }
+    //empty constructor
+    StationWagon(){}
+    //empty distructor
+    ~StationWagon();
+
+};
+
+
 
 
 int main() {
@@ -393,34 +591,132 @@ int main() {
 
     ////////////////////////////////////////////////////////////////
     // Pointers:
+    int myAge = 39;
+    char myGrade = 'A';
+    // checking how much bytes each take in our memory:
+    // so we can reference them in a pointer
+    cout << "Size of int " << sizeof(myAge) << endl; // will take 4 bytes
+    cout << "Size of char" << sizeof(myGrade) << endl; // will take 1 byte
+    // address of var -> &var 
+    cout << "myAge is located at " << &myAge << endl;
+    //pointer is able to store a memory address
+    int* agePtr = &myAge;
+    cout << "Address of pointer " << agePtr << endl;
+    cout << "Data at memory address" << *agePtr << endl;
+    // pointers in arrays:
+    int badNums[5] = { 4, 13, 14, 24 };
+    int* numArrayPtr = badNums;
+    cout << "Address " << numArrayPtr << "Value " << *numArrayPtr << endl;
+    numArrayPtr++;
+    cout << "Address " << numArrayPtr << "Value " << *numArrayPtr << endl;
+    // array name is just a pointer to the array!
+    cout << "Address " << badNums << "Value " << *badNums << endl;
+    //pointers in functions:
+    // when you pass a variable pointer to a function you are passing by value
+    // when you pass a reference to a function you are actually passing a
+    // reference that can't be changed
+    makeMeYoung(&myAge);
+    cout << "I'm " << myAge << " years old now" << endl;
 
+
+    ////////////////////////////////////////////////////////////////////
     // Reference Operator:
+    // adding & means reference o the assign variable
+    int& ageRef = myAge;
+    cout << "myAge: " << myAge << endl;
+    ageRef++;
+    cout << "myAge: " << myAge << endl;
+    // reference in functions:
+    actYourAge(ageRef);
+    cout << "myAge: " << myAge << endl;
 
+    ///////////////////////////////////////
+    /*
+    When should we use pointers and when should we use references?
+    use POINTER if you don't want to have to initilaize decleration
+    exp of decleration in reference: 
+    int& ageRef = myAge;
+    when using pointers there is no need to init
+
+    use a POINTER when you want to assign to it more then one variable.
+    a REFERENCE can only assign to one variable.
+
+    use a REFERENCE if you don' want to change whatever you'r pointing at
+    */
+
+
+    ///////////////////////////////////////////////////////////////
     // Classes/ Objects:
+    //calling the constructer that needs no attriuts
+    Animal fred;
+    fred.setHeight(33);
+    fred.setWeight(10);
+    fred.setName("Fred");
+    cout << fred.getName() << " is " << fred.getHeight() << " cms tall and "
+        << fred.getWeight() << " kg n weight" << endl;
 
-    // Private:
+    //calling the constructer with the attributs
+    Animal tom(36, 15, "Tom");
+    cout << tom.getName() << " is " << tom.getHeight() << " cms tall and "
+        << tom.getWeight() << " kg n weight" << endl;
+    
 
-    // Static Variables:
-
-    // Public / Encapsulation:
-
-    // Constructors:
-
-    // Static Functions:
-
-    // this:
-
-    // Inheritance:
-
+    ////////////////////////////////////////////////////////////////////////////////
     // Call Superclass Constructor:
+    //creating a dog object:
+    Dog spot(38, 16, "Spot", "Woof");
+    cout << "Number of Animals " << Animal::getNumOfAnimals << endl;
+    spot.getSound();
+    tom.toString();
+    spot.toString();
+    // we can call the super-class vertion of a method by doing the :: (using the scop operator)
+    spot.Animal::toString();
 
-    // Excute Static Methods:
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    // calling Virtual Methods and Polymorphism:
+    // in this case it doesn't matter if the function is virtual or not
+    // because they are both references to humans and girls
+    Human* human = new Human;
+    Girl* girl = new Girl;
+    // the virtual method is important for this:
+    whatClassAreYou(human);
+    whatClassAreYou(girl);
+    // we can see that if we take down the virtual from the method 
+    // the result of the 2 lines above is Human and Human
+    //but when we get the virtual back (and not leave the method as just void)
+    // we get the right answere
+    // this basiclly check if the sub class has the method already and use the sub class method
+    // when its calling from the sub class
 
-    // Virtual Methods:
 
-    // Polymorphism:
+    //Polymorphism:
+    Girl yael;
+    BlondGirl romi;
+    //the base class can also call derive class method as long as they excist in the
+    //base class
+    Human* ptrGirl = &yael;
+    Human* ptrBlondGirl = &romi;
+    // now we can call the method that was not over writted
+    ptrGirl->getFamily(); // prints "we are Humen"
+    // we can call a class that was over writted
+    ptrGirl->getClass(); // prints " I'm a Girl"
+    //we can call the super-class
+    ptrBlondGirl->getFamily();// prints "we are human"
+    ptrBlondGirl->getClass(); // prints "I am a blond girl"
 
+
+    /////////////////////////////////////////////////////////////////////////////
     // Abstract Data Type:
+    Human* pBoy = new Boy; 
+    Human* pGirl = new Girl; // prints the girls says lalala
+
+    pBoy->makeSound();// prints the boy says yheyheyhe
+    pGirl->makeSound();// prints the girls says lalala
+
+    Car* stationWagon = new StationWagon();
+    stationWagon->getNumWheels();
+
+
 
         //meaning the execution went trough perfectly fine:
         return 0;
