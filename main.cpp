@@ -230,14 +230,6 @@ public:
 
 int main() {
 
-    int numberush = 20;
-    for (int bla = 0; bla < numberush; --bla) {
-        cout << "-" << endl;
-    }
-
-
-
-
     // summery of C++
 
     // this is how you do a comment
